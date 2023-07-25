@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# lint-staged will check formatting and error only on committed files
+# This was set up on package.json
+npm lint-staged
