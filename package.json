@@ -15,10 +15,14 @@
 		"start": "wp-scripts start"
 	},
 	"prettier": "@wordpress/prettier-config",
+	"stylelint": {
+ 	   "extends": "@wordpress/stylelint-config/scss"
+	},
 	"devDependencies": {
 		"@wordpress/eslint-plugin": "^14.11.0",
 		"@wordpress/prettier-config": "^2.21.0",
 		"@wordpress/scripts": "^26.9.0",
+		"@wordpress/stylelint-config": "^21.21.0",
 		"eslint-config-prettier": "^8.8.0"
 	}
 }
