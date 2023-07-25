@@ -21,7 +21,7 @@
 	},
 	"lint-staged": {
 		"*.js": "wp-scripts lint-js",
-		"*.css": "wp-scripts lint-style"
+		"*.scss": "wp-scripts lint-style"
 	},
 	"devDependencies": {
 		"@wordpress/eslint-plugin": "^14.11.0",
