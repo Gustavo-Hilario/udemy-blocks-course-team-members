@@ -1,5 +1,41 @@
-.wp-block-create-block-boilerplate {
-	background-color: rgb(10, 144, 144);
+.wp-block-blocks-course-team-members {
+	background-color: rgb(224, 250, 254);
 	color: #fff;
 	padding: 2px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+	border-radius: 10px;
+
+	@for $i from 1 through 6 {
+		&.has-#{$i}-columns {
+
+			.wp-block-blocks-course-team-member {
+				color: #800080;
+				flex: 0 0 calc((100% / #{$i} - 20px));
+			}
+		}
+	}
+
+	.wp-block-blocks-course-team-member {
+		text-align: center;
+
+		h4 {
+			font-size: 1.5rem;
+			font-weight: 800;
+			color: rgb(244, 144, 144);
+			margin-top: 0.5rem;
+			margin-bottom: 0.5rem;
+		}
+
+		p {
+			font-size: 1rem;
+			font-weight: 400;
+			font-style: italic;
+			color: rgb(100, 200, 250);
+			margin-top: 0.2rem;
+			margin-bottom: 0.2rem;
+		}
+	}
 }

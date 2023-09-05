@@ -18,6 +18,7 @@ export default function Edit( { attributes, setAttributes } ) {
 			<RichText
 				placeholder={ __( 'Team Member Name', 'team-member' ) }
 				tagName="h4"
+				className="blocks-course-team-member-name"
 				value={ name }
 				onChange={ onChangeName }
 				allowedFormats={ [] }
@@ -25,6 +26,7 @@ export default function Edit( { attributes, setAttributes } ) {
 			<RichText
 				placeholder={ __( 'Team Member Bio', 'team-member' ) }
 				tagName="p"
+				className="blocks-course-team-member-bio"
 				value={ bio }
 				onChange={ onChangeBio }
 				allowedFormats={ [] }
