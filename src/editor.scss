@@ -49,6 +49,23 @@
 	div[data-type="blocks-course/team-member"] > div[data-type="blocks-course/team-member"] {
 		text-align: center;
 
+		.block-team-member-img {
+			position: relative;
+
+			&.is-loading img {
+				opacity: 0.3;
+			}
+
+			.components-spinner {
+				position: absolute;
+				right: 0;
+				left: 0;
+				top: 0;
+				bottom: 0;
+				margin: auto;
+			}
+		}
+
 		h4 {
 			font-size: 1.5rem;
 			font-weight: 800;

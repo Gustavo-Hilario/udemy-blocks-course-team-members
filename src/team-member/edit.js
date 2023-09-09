@@ -6,8 +6,12 @@ import {
 	MediaPlaceholder,
 } from '@wordpress/block-editor';
 
+import { isBlobURL } from '@wordpress/blob';
+
+import { Spinner } from '@wordpress/components';
+
 export default function Edit( { attributes, setAttributes } ) {
-	const { name, bio } = attributes;
+	const { name, bio, url, alt } = attributes;
 
 	const onChangeName = ( newName ) => {
 		setAttributes( { name: newName } );
@@ -17,18 +21,39 @@ export default function Edit( { attributes, setAttributes } ) {
 		setAttributes( { bio: newBio } );
 	};
 
+	const onSelectImage = ( image ) => {
+		if ( ! image || ! image.url ) {
+			setAttributes( { url: undefined, id: undefined, alt: '' } );
+			return;
+		}
+		setAttributes( {
+			id: image.id,
+			url: image.url,
+			alt: image.alt,
+		} );
+	};
+
 	return (
 		<div { ...useBlockProps() }>
+			{ url && (
+				<div
+					className={ `block-team-member-img${
+						isBlobURL( url ) ? ' is-loading' : ''
+					} ` }
+				>
+					<img src={ url } alt={ alt } width="200" height="100" />
+					{ isBlobURL( url ) && <Spinner /> }
+				</div>
+			) }
 			<MediaPlaceholder
 				accept="image/*"
 				allowedTypes={ [ 'image' ] }
+				disableMediaButtons={ url }
 				icon="admin-users"
 				labels={ { title: __( 'The Image' ) } }
 				multiple={ false }
-				onSelect={ ( el ) => {
-					//eslint-disable-next-line
-					console.log( el );
-				} }
+				onSelect={ onSelectImage }
+				//eslint-disable-next-line
 				onSelectURL={ ( url ) => {
 					//eslint-disable-next-line
 					console.log( url );
