@@ -12,7 +12,7 @@ import {
 
 import { isBlobURL, revokeBlobURL } from '@wordpress/blob';
 
-import { Spinner, withNotices } from '@wordpress/components';
+import { Spinner, withNotices, ToolbarButton } from '@wordpress/components';
 
 function Edit( { attributes, setAttributes, noticeOperations, noticeUI } ) {
 	const { name, bio, url, alt, id } = attributes;
@@ -68,18 +68,32 @@ function Edit( { attributes, setAttributes, noticeOperations, noticeUI } ) {
 
 	return (
 		<>
-			<BlockControls group="inline">
-				<MediaReplaceFlow
-					name={ __( 'Replace Image', 'team-members' ) }
-					accept="image/*"
-					allowedTypes={ [ 'image' ] }
-					mediaURL={ url }
-					mediaID={ id }
-					onSelect={ onSelectImage }
-					onSelectURL={ onImageSelectURL }
-					onError={ onUploadError }
-				/>
-			</BlockControls>
+			{ url && (
+				<BlockControls group="inline">
+					<ToolbarButton
+						icon="trash"
+						label={ __( 'Remove Image', 'team-member' ) }
+						onClick={ () => {
+							setAttributes( {
+								id: undefined,
+								url: undefined,
+								alt: '',
+							} );
+						} }
+						disabled={ ! url }
+					/>
+					<MediaReplaceFlow
+						name={ __( 'Replace Image', 'team-members' ) }
+						accept="image/*"
+						allowedTypes={ [ 'image' ] }
+						mediaURL={ url }
+						mediaID={ id }
+						onSelect={ onSelectImage }
+						onSelectURL={ onImageSelectURL }
+						onError={ onUploadError }
+					/>
+				</BlockControls>
+			) }
 			<div { ...useBlockProps() }>
 				{ url && (
 					<div
