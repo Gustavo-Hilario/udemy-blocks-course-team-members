@@ -8,6 +8,7 @@
 	padding: 2px;
 	display: flex;
 	flex-wrap: wrap;
+	justify-content: center;
 	gap: 20px;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 	border-radius: 10px;
@@ -23,6 +24,13 @@
 
 	.wp-block-blocks-course-team-member {
 		text-align: center;
+
+		.block-team-member-img img {
+			margin-top: 10px;
+			margin-bottom: 10px;
+			border-radius: 20px;
+			max-height: 200px;
+		}
 
 		h4 {
 			font-size: 1.5rem;

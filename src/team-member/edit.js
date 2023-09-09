@@ -50,7 +50,7 @@ function Edit( { attributes, setAttributes, noticeOperations, noticeUI } ) {
 						isBlobURL( url ) ? ' is-loading' : ''
 					} ` }
 				>
-					<img src={ url } alt={ alt } width="200" height="100" />
+					<img src={ url } alt={ alt } />
 					{ isBlobURL( url ) && <Spinner /> }
 				</div>
 			) }
