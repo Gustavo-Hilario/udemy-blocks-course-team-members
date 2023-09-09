@@ -6,6 +6,8 @@ import {
 	useBlockProps,
 	RichText,
 	MediaPlaceholder,
+	BlockControls,
+	MediaReplaceFlow,
 } from '@wordpress/block-editor';
 
 import { isBlobURL, revokeBlobURL } from '@wordpress/blob';
@@ -65,46 +67,60 @@ function Edit( { attributes, setAttributes, noticeOperations, noticeUI } ) {
 	};
 
 	return (
-		<div { ...useBlockProps() }>
-			{ url && (
-				<div
-					className={ `block-team-member-img${
-						isBlobURL( url ) ? ' is-loading' : ''
-					} ` }
-				>
-					<img src={ url } alt={ alt } />
-					{ isBlobURL( url ) && <Spinner /> }
-				</div>
-			) }
-			<MediaPlaceholder
-				accept="image/*"
-				allowedTypes={ [ 'image' ] }
-				disableMediaButtons={ url }
-				icon="admin-users"
-				labels={ { title: __( 'The Image' ) } }
-				multiple={ false }
-				onSelect={ onSelectImage }
-				onSelectURL={ onImageSelectURL }
-				onError={ onUploadError }
-				notices={ noticeUI }
-			/>
-			<RichText
-				placeholder={ __( 'Team Member Name', 'team-member' ) }
-				tagName="h4"
-				className="blocks-course-team-member-name"
-				value={ name }
-				onChange={ onChangeName }
-				allowedFormats={ [] }
-			/>
-			<RichText
-				placeholder={ __( 'Team Member Bio', 'team-member' ) }
-				tagName="p"
-				className="blocks-course-team-member-bio"
-				value={ bio }
-				onChange={ onChangeBio }
-				allowedFormats={ [] }
-			/>
-		</div>
+		<>
+			<BlockControls group="inline">
+				<MediaReplaceFlow
+					name={ __( 'Replace Image', 'team-members' ) }
+					accept="image/*"
+					allowedTypes={ [ 'image' ] }
+					mediaURL={ url }
+					mediaID={ id }
+					onSelect={ onSelectImage }
+					onSelectURL={ onImageSelectURL }
+					onError={ onUploadError }
+				/>
+			</BlockControls>
+			<div { ...useBlockProps() }>
+				{ url && (
+					<div
+						className={ `block-team-member-img${
+							isBlobURL( url ) ? ' is-loading' : ''
+						} ` }
+					>
+						<img src={ url } alt={ alt } />
+						{ isBlobURL( url ) && <Spinner /> }
+					</div>
+				) }
+				<MediaPlaceholder
+					accept="image/*"
+					allowedTypes={ [ 'image' ] }
+					disableMediaButtons={ url }
+					icon="admin-users"
+					labels={ { title: __( 'The Image' ) } }
+					multiple={ false }
+					onSelect={ onSelectImage }
+					onSelectURL={ onImageSelectURL }
+					onError={ onUploadError }
+					notices={ noticeUI }
+				/>
+				<RichText
+					placeholder={ __( 'Team Member Name', 'team-member' ) }
+					tagName="h4"
+					className="blocks-course-team-member-name"
+					value={ name }
+					onChange={ onChangeName }
+					allowedFormats={ [] }
+				/>
+				<RichText
+					placeholder={ __( 'Team Member Bio', 'team-member' ) }
+					tagName="p"
+					className="blocks-course-team-member-bio"
+					value={ bio }
+					onChange={ onChangeBio }
+					allowedFormats={ [] }
+				/>
+			</div>
+		</>
 	);
 }
 
