@@ -1,7 +1,5 @@
 import { __ } from '@wordpress/i18n';
 
-import { useEffect, useState } from '@wordpress/element';
-
 import {
 	useBlockProps,
 	RichText,
@@ -9,9 +7,9 @@ import {
 	BlockControls,
 	MediaReplaceFlow,
 	InspectorControls,
+	// store will help us skip manually adding "core/block-editor" to the Select function
+	store as BlockEditorStore,
 } from '@wordpress/block-editor';
-
-import { isBlobURL, revokeBlobURL } from '@wordpress/blob';
 
 import {
 	Spinner,
@@ -20,12 +18,54 @@ import {
 	Panel,
 	PanelBody,
 	TextareaControl,
+	SelectControl,
 } from '@wordpress/components';
+
+import { useEffect, useState } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
+
+import { isBlobURL, revokeBlobURL } from '@wordpress/blob';
 
 function Edit( { attributes, setAttributes, noticeOperations, noticeUI } ) {
 	const { name, bio, url, alt, id } = attributes;
 
 	const [ blobURL, setBlobURL ] = useState();
+
+	// Get the image object from the media library. It should update every time the ID changes
+	const imageObject = useSelect(
+		( select ) => {
+			const { getMedia } = select( 'core' );
+			return id ? getMedia( id ) : null;
+		},
+		[ id ]
+	);
+
+	// console.log( imageObject );
+
+	// Get the image sizes from the settings (defined in PHP/Theme settings)
+	const imageSizes = useSelect( ( select ) => {
+		return select( BlockEditorStore ).getSettings().imageSizes;
+	}, [] );
+
+	// console.log( imageSizes );
+
+	// Compare (Media Library and PHP config) and return an array of image sizes if they match in both places
+	const imageSizeOptions = imageSizes
+		.filter( ( imageSize ) => {
+			return (
+				imageObject && imageObject.media_details.sizes[ imageSize.slug ]
+			);
+		} )
+		.map( ( imageSize ) => {
+			return {
+				value: imageObject.media_details.sizes[ imageSize.slug ]
+					.source_url,
+
+				label: imageSize.name,
+			};
+		} );
+
+	// console.log( imageSizeOptions );
 
 	// Check if is there any saved blob URL
 	useEffect( () => {
@@ -73,6 +113,11 @@ function Edit( { attributes, setAttributes, noticeOperations, noticeUI } ) {
 		setAttributes( { url: newURL, id: undefined, alt: '' } );
 	};
 
+	// Update the image size based on the Size (URL) selected
+	const onChangeImageSize = ( newSize ) => {
+		setAttributes( { url: newSize } );
+	};
+
 	const onUploadError = ( message ) => {
 		noticeOperations.removeAllNotices();
 		noticeOperations.createErrorNotice( message );
@@ -89,7 +134,7 @@ function Edit( { attributes, setAttributes, noticeOperations, noticeUI } ) {
 							initialOpen={ true }
 						>
 							<TextareaControl
-								label="Image Alt Text"
+								label={ __( 'Image Alt Text', 'team-members' ) }
 								value={ alt }
 								onChange={ onChangeImageAlt }
 								help={ __(
@@ -97,6 +142,18 @@ function Edit( { attributes, setAttributes, noticeOperations, noticeUI } ) {
 									'team-members'
 								) }
 							></TextareaControl>
+							{ id && (
+								<SelectControl
+									label={ __( 'Image Size', 'team-members' ) }
+									onChange={ onChangeImageSize }
+									help={ __(
+										'Select the image size',
+										'team-members'
+									) }
+									options={ [ ...imageSizeOptions ] }
+									value={ url }
+								/>
+							) }
 						</PanelBody>
 					</Panel>
 				) }
