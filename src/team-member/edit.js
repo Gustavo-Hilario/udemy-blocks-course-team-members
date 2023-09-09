@@ -1,17 +1,39 @@
 import { __ } from '@wordpress/i18n';
 
+import { useEffect, useState } from '@wordpress/element';
+
 import {
 	useBlockProps,
 	RichText,
 	MediaPlaceholder,
 } from '@wordpress/block-editor';
 
-import { isBlobURL } from '@wordpress/blob';
+import { isBlobURL, revokeBlobURL } from '@wordpress/blob';
 
 import { Spinner, withNotices } from '@wordpress/components';
 
 function Edit( { attributes, setAttributes, noticeOperations, noticeUI } ) {
-	const { name, bio, url, alt } = attributes;
+	const { name, bio, url, alt, id } = attributes;
+
+	const [ blobURL, setBlobURL ] = useState();
+
+	// Check if is there any saved blob URL
+	useEffect( () => {
+		// console.log( 'Loading for the first tiem' );
+		if ( ! id && isBlobURL( url ) ) {
+			setAttributes( { url: undefined, alt: '' } );
+		}
+	}, [] );
+
+	// Free space if the url is a blob URL → Check if URL is a blog URL after reloading
+	useEffect( () => {
+		if ( isBlobURL( url ) ) {
+			setBlobURL( url );
+		} else {
+			revokeBlobURL( blobURL );
+			setBlobURL( undefined );
+		}
+	}, [ url ] );
 
 	const onChangeName = ( newName ) => {
 		setAttributes( { name: newName } );
