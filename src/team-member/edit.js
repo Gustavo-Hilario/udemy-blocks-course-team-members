@@ -8,11 +8,19 @@ import {
 	MediaPlaceholder,
 	BlockControls,
 	MediaReplaceFlow,
+	InspectorControls,
 } from '@wordpress/block-editor';
 
 import { isBlobURL, revokeBlobURL } from '@wordpress/blob';
 
-import { Spinner, withNotices, ToolbarButton } from '@wordpress/components';
+import {
+	Spinner,
+	withNotices,
+	ToolbarButton,
+	Panel,
+	PanelBody,
+	TextareaControl,
+} from '@wordpress/components';
 
 function Edit( { attributes, setAttributes, noticeOperations, noticeUI } ) {
 	const { name, bio, url, alt, id } = attributes;
@@ -57,6 +65,10 @@ function Edit( { attributes, setAttributes, noticeOperations, noticeUI } ) {
 		} );
 	};
 
+	const onChangeImageAlt = ( newAlt ) => {
+		setAttributes( { alt: newAlt } );
+	};
+
 	const onImageSelectURL = ( newURL ) => {
 		setAttributes( { url: newURL, id: undefined, alt: '' } );
 	};
@@ -68,6 +80,27 @@ function Edit( { attributes, setAttributes, noticeOperations, noticeUI } ) {
 
 	return (
 		<>
+			<InspectorControls>
+				{ url && ! isBlobURL( url ) && (
+					<Panel header="My Panel">
+						<PanelBody
+							title={ __( 'Image Settings', 'team-members' ) }
+							icon="format-image"
+							initialOpen={ true }
+						>
+							<TextareaControl
+								label="Image Alt Text"
+								value={ alt }
+								onChange={ onChangeImageAlt }
+								help={ __(
+									`Alternative text describes your image to people who can’t see it. Add a short description with its key details.`,
+									'team-members'
+								) }
+							></TextareaControl>
+						</PanelBody>
+					</Panel>
+				) }
+			</InspectorControls>
 			{ url && (
 				<BlockControls group="inline">
 					<ToolbarButton
@@ -94,6 +127,7 @@ function Edit( { attributes, setAttributes, noticeOperations, noticeUI } ) {
 					/>
 				</BlockControls>
 			) }
+
 			<div { ...useBlockProps() }>
 				{ url && (
 					<div
