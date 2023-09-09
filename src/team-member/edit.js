@@ -8,9 +8,9 @@ import {
 
 import { isBlobURL } from '@wordpress/blob';
 
-import { Spinner } from '@wordpress/components';
+import { Spinner, withNotices } from '@wordpress/components';
 
-export default function Edit( { attributes, setAttributes } ) {
+function Edit( { attributes, setAttributes, noticeOperations, noticeUI } ) {
 	const { name, bio, url, alt } = attributes;
 
 	const onChangeName = ( newName ) => {
@@ -37,6 +37,11 @@ export default function Edit( { attributes, setAttributes } ) {
 		setAttributes( { url: newURL, id: undefined, alt: '' } );
 	};
 
+	const onUploadError = ( message ) => {
+		noticeOperations.removeAllNotices();
+		noticeOperations.createErrorNotice( message );
+	};
+
 	return (
 		<div { ...useBlockProps() }>
 			{ url && (
@@ -57,13 +62,9 @@ export default function Edit( { attributes, setAttributes } ) {
 				labels={ { title: __( 'The Image' ) } }
 				multiple={ false }
 				onSelect={ onSelectImage }
-				onSelectURL={ ( newURL ) => {
-					onImageSelectURL( newURL );
-				} }
-				onError={ ( error ) => {
-					//eslint-disable-next-line
-					console.log( error );
-				} }
+				onSelectURL={ onImageSelectURL }
+				onError={ onUploadError }
+				notices={ noticeUI }
 			/>
 			<RichText
 				placeholder={ __( 'Team Member Name', 'team-member' ) }
@@ -84,3 +85,5 @@ export default function Edit( { attributes, setAttributes } ) {
 		</div>
 	);
 }
+
+export default withNotices( Edit );
