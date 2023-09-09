@@ -33,6 +33,10 @@ export default function Edit( { attributes, setAttributes } ) {
 		} );
 	};
 
+	const onImageSelectURL = ( newURL ) => {
+		setAttributes( { url: newURL, id: undefined, alt: '' } );
+	};
+
 	return (
 		<div { ...useBlockProps() }>
 			{ url && (
@@ -53,10 +57,8 @@ export default function Edit( { attributes, setAttributes } ) {
 				labels={ { title: __( 'The Image' ) } }
 				multiple={ false }
 				onSelect={ onSelectImage }
-				//eslint-disable-next-line
-				onSelectURL={ ( url ) => {
-					//eslint-disable-next-line
-					console.log( url );
+				onSelectURL={ ( newURL ) => {
+					onImageSelectURL( newURL );
 				} }
 				onError={ ( error ) => {
 					//eslint-disable-next-line
