@@ -19,6 +19,8 @@ import {
 	PanelBody,
 	TextareaControl,
 	SelectControl,
+	Icon,
+	Tooltip,
 } from '@wordpress/components';
 
 import { useEffect, useState, useRef } from '@wordpress/element';
@@ -29,8 +31,14 @@ import { usePrevious } from '@wordpress/compose';
 
 import { isBlobURL, revokeBlobURL } from '@wordpress/blob';
 
-function Edit( { attributes, setAttributes, noticeOperations, noticeUI } ) {
-	const { name, bio, url, alt, id } = attributes;
+function Edit( {
+	attributes,
+	setAttributes,
+	noticeOperations,
+	noticeUI,
+	isSelected,
+} ) {
+	const { name, bio, url, alt, id, socialLinks } = attributes;
 
 	const prevURL = usePrevious( url );
 
@@ -239,6 +247,36 @@ function Edit( { attributes, setAttributes, noticeOperations, noticeUI } ) {
 					onChange={ onChangeBio }
 					allowedFormats={ [] }
 				/>
+				<div className="blocks-course-team-member-social-links">
+					<ul>
+						{ socialLinks.map( ( link, index ) => {
+							return (
+								<li key={ index }>
+									<Icon icon={ link.icon } />
+								</li>
+							);
+						} ) }
+						{ isSelected && (
+							<li className="blocks-course-team-member-social-links-add">
+								<Tooltip
+									text={ __(
+										'Add Social Link',
+										'team-member'
+									) }
+								>
+									<button
+										aria-label={ __(
+											'Add Social Link',
+											'team-member'
+										) }
+									>
+										<Icon icon="plus" />
+									</button>
+								</Tooltip>
+							</li>
+						) }
+					</ul>
+				</div>
 			</div>
 		</>
 	);
