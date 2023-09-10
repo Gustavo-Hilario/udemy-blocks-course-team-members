@@ -40,6 +40,7 @@ function Edit( {
 } ) {
 	const { name, bio, url, alt, id, socialLinks } = attributes;
 
+	// Handling Image Logic
 	const prevURL = usePrevious( url );
 
 	const [ blobURL, setBlobURL ] = useState();
@@ -106,6 +107,18 @@ function Edit( {
 			titleRef.current.focus();
 		}
 	}, [ url, prevURL ] );
+
+	// Handling Social Links
+	const [ selectedLink, setSelectedLink ] = useState();
+
+	const prevIsSelected = usePrevious( isSelected );
+
+	// Remove
+	useEffect( () => {
+		if ( ! isSelected && prevIsSelected ) {
+			setSelectedLink( undefined );
+		}
+	}, [ isSelected, prevIsSelected ] );
 
 	const onChangeName = ( newName ) => {
 		setAttributes( { name: newName } );
@@ -251,8 +264,25 @@ function Edit( {
 					<ul>
 						{ socialLinks.map( ( link, index ) => {
 							return (
-								<li key={ index }>
-									<Icon icon={ link.icon } />
+								<li
+									key={ index }
+									className={
+										selectedLink === index
+											? 'is-selected'
+											: null
+									}
+								>
+									<button
+										aria-label={ __(
+											'Edit Social Link',
+											'team-member'
+										) }
+										onClick={ () => {
+											setSelectedLink( index );
+										} }
+									>
+										<Icon icon={ link.icon } />
+									</button>
 								</li>
 							);
 						} ) }

@@ -96,7 +96,17 @@
 				justify-content: center;
 
 				li {
-					color: #4e4e4e;
+
+					button {
+						background: transparent;
+						border: none;
+						color: #4e4e4e;
+					}
+
+					&.is-selected button {
+						color: #ffc0cb;
+						outline: 1px dashed #f00;
+					}
 				}
 
 				.blocks-course-team-member-social-links-add {
