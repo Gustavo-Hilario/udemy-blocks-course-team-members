@@ -13,7 +13,8 @@
 		"Grid"
 	],
 	"supports": {
-		"html": false
+		"html": false,
+		"align": ["wide", "full"]
 	},
 	"attributes": {
 		"columns": {
