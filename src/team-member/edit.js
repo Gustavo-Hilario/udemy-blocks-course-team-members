@@ -21,13 +21,18 @@ import {
 	SelectControl,
 } from '@wordpress/components';
 
-import { useEffect, useState } from '@wordpress/element';
+import { useEffect, useState, useRef } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
+
+// Learn More: https://developer.wordpress.org/block-editor/packages/packages-data/
+import { usePrevious } from '@wordpress/compose';
 
 import { isBlobURL, revokeBlobURL } from '@wordpress/blob';
 
 function Edit( { attributes, setAttributes, noticeOperations, noticeUI } ) {
 	const { name, bio, url, alt, id } = attributes;
+
+	const prevURL = usePrevious( url );
 
 	const [ blobURL, setBlobURL ] = useState();
 
@@ -67,6 +72,8 @@ function Edit( { attributes, setAttributes, noticeOperations, noticeUI } ) {
 
 	// console.log( imageSizeOptions );
 
+	const titleRef = useRef( () => {} );
+
 	// Check if is there any saved blob URL
 	useEffect( () => {
 		// console.log( 'Loading for the first tiem' );
@@ -84,6 +91,13 @@ function Edit( { attributes, setAttributes, noticeOperations, noticeUI } ) {
 			setBlobURL( undefined );
 		}
 	}, [ url ] );
+
+	// Focus on the title field when the image is uploaded/added only
+	useEffect( () => {
+		if ( url && ! prevURL ) {
+			titleRef.current.focus();
+		}
+	}, [ url, prevURL ] );
 
 	const onChangeName = ( newName ) => {
 		setAttributes( { name: newName } );
@@ -209,6 +223,7 @@ function Edit( { attributes, setAttributes, noticeOperations, noticeUI } ) {
 					notices={ noticeUI }
 				/>
 				<RichText
+					ref={ titleRef }
 					placeholder={ __( 'Team Member Name', 'team-member' ) }
 					tagName="h4"
 					className="blocks-course-team-member-name"
