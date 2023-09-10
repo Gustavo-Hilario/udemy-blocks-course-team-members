@@ -124,7 +124,7 @@ function Edit( {
 		setAttributes( {
 			socialLinks: [
 				...socialLinks,
-				{ link: 'https:gustavohilario.com', icon: 'wordpress' },
+				{ link: 'https://gustavohilario.com', icon: 'wordpress' },
 			],
 		} );
 
