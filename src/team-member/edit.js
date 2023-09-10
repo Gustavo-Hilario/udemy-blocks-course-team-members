@@ -120,6 +120,17 @@ function Edit( {
 		}
 	}, [ isSelected, prevIsSelected ] );
 
+	const addSocialLink = () => {
+		setAttributes( {
+			socialLinks: [
+				...socialLinks,
+				{ link: 'https:gustavohilario.com', icon: 'wordpress' },
+			],
+		} );
+
+		setSelectedLink( socialLinks.length );
+	};
+
 	const onChangeName = ( newName ) => {
 		setAttributes( { name: newName } );
 	};
@@ -299,6 +310,7 @@ function Edit( {
 											'Add Social Link',
 											'team-member'
 										) }
+										onClick={ addSocialLink }
 									>
 										<Icon icon="plus" />
 									</button>
