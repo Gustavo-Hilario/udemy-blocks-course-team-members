@@ -52,6 +52,19 @@ registerBlockType( 'blocks-course/team-member', {
 				{ link: 'https://linkedin.com', icon: 'linkedin' },
 				{ link: 'https://youtube.com', icon: 'youtube' },
 			],
+			source: 'query',
+			selector: '.blocks-course-team-member-social-links ul li',
+			query: {
+				icon: {
+					source: 'attribute',
+					attribute: 'data-icon',
+				},
+				link: {
+					selector: 'a',
+					source: 'attribute',
+					attribute: 'href',
+				},
+			},
 		},
 	},
 	edit: Edit,
