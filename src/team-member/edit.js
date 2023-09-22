@@ -21,6 +21,10 @@ import {
 	SelectControl,
 	Icon,
 	Tooltip,
+	TextControl,
+	Button,
+	Flex,
+	FlexItem,
 } from '@wordpress/components';
 
 import { useEffect, useState, useRef } from '@wordpress/element';
@@ -167,6 +171,23 @@ function Edit( {
 	const onUploadError = ( message ) => {
 		noticeOperations.removeAllNotices();
 		noticeOperations.createErrorNotice( message );
+	};
+
+	// Handle editing and removing social links
+	const deleteSocialLink = () => {
+		const newLinks = socialLinks.filter( ( link, index ) => {
+			return index !== selectedLink;
+		} );
+
+		setAttributes( { socialLinks: newLinks } );
+		setSelectedLink( newLinks.length - 1 );
+	};
+
+	// Handling
+	const editSocialItem = ( type, value ) => {
+		const socialLinksCopy = [ ...socialLinks ];
+		socialLinksCopy[ selectedLink ][ type ] = value;
+		setAttributes( { socialLinks: socialLinksCopy } );
 	};
 
 	return (
@@ -319,6 +340,45 @@ function Edit( {
 						) }
 					</ul>
 				</div>
+				{ selectedLink !== undefined && (
+					<div className="blocks-course-team-member-social-links-form">
+						<TextControl
+							label={ __( 'Social Link URL', 'team-member' ) }
+							value={
+								selectedLink !== undefined
+									? socialLinks[ selectedLink ].link
+									: ''
+							}
+							onChange={ ( newLink ) =>
+								editSocialItem( 'link', newLink )
+							}
+						/>
+
+						<TextControl
+							label={ __( 'Social Link Icon', 'team-member' ) }
+							value={
+								selectedLink !== undefined
+									? socialLinks[ selectedLink ].icon
+									: ''
+							}
+							onChange={ ( newIcon ) =>
+								editSocialItem( 'icon', newIcon )
+							}
+						/>
+						<Flex>
+							<FlexItem>
+								<Button
+									label={ __( 'Delete Link', 'team-member' ) }
+									icon="trash"
+									variant="secondary"
+									onClick={ deleteSocialLink }
+								>
+									Delete
+								</Button>
+							</FlexItem>
+						</Flex>
+					</div>
+				) }
 			</div>
 		</>
 	);
