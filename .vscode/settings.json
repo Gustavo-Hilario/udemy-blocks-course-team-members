@@ -1,7 +1,6 @@
 {
     "editor.fontSize": 16,
-    "window.zoomLevel": 1.0,
-    "workbench.activityBar.visible": true,
+    "window.zoomLevel": 1,
     "workbench.statusBar.visible": false,
     "terminal.integrated.fontSize": 18,
     "terminal.integrated.fontWeight": "500",
@@ -11,7 +10,7 @@
     "[scss]": {
         "editor.formatOnSave": false,
         "editor.codeActionsOnSave": {
-            "source.fixAll.stylelint": true,
-    }
+            "source.fixAll.stylelint": "explicit"
+        }
 }
 }

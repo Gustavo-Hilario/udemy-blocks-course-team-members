@@ -19,8 +19,52 @@
 	"attributes": {
 		"columns": {
 			"type": "number",
-			"default": 2
+			"default": 3
 		}
+	},
+	"example": {
+		"attributes": {
+			"columns": 3
+		},
+		"innerBlocks": [
+			{
+				"name": "blocks-course/team-member",
+				"attributes": {
+					"name": "John Doe",
+					"url": "https://picsum.photos/200/300",
+					"bio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae nisi eget nunc ultricies aliquam. Sed euismod, nisl quis lacinia aliquet, diam magna aliquam enim, vitae aliquam nunc nisl quis nunc. Sed vitae nisi eget nunc ultricies aliquam. Sed euismod, nisl quis lacinia aliquet, diam magna aliquam enim, vitae aliquam nunc nisl quis nunc.",
+					"socialLinks": [
+						{
+							"icon": "facebook"
+						},
+						{
+							"icon": "twitter"
+						},
+						{
+							"icon": "instagram"
+						}
+					]
+				}
+			},
+			{
+				"name": "blocks-course/team-member",
+				"attributes": {
+					"name": "Jane Doe",
+					"role": "CTO",
+					"image": "https://placehold.it/300x300",
+					"bio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae nisi eget nunc ultricies aliquam. Sed euismod, nisl quis lacinia aliquet, diam magna aliquam enim, vitae aliquam nunc nisl quis nunc. Sed vitae nisi eget nunc ultricies aliquam. Sed euismod, nisl quis lacinia aliquet, diam magna aliquam enim, vitae aliquam nunc nisl quis nunc."
+				}
+			},
+			{
+				"name": "blocks-course/team-member",
+				"attributes": {
+					"name": "John Smith",
+					"role": "COO",
+					"image": "https://placehold.it/300x300",
+					"bio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae nisi eget nunc ultricies aliquam. Sed euismod, nisl quis lacinia aliquet, diam magna aliquam enim, vitae aliquam nunc nisl quis nunc. Sed vitae nisi eget nunc ultricies aliquam. Sed euismod, nisl quis lacinia aliquet, diam magna aliquam enim, vitae aliquam nunc nisl quis nunc."
+				}
+			}
+		]
 	},
 	"textdomain": "team-members",
 	"editorScript": "file:./index.js",
