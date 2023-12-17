@@ -27,6 +27,25 @@ import {
 	FlexItem,
 } from '@wordpress/components';
 
+// Sortable Import with DndKit
+import {
+	DndContext,
+	useSensor,
+	useSensors,
+	PointerSensor,
+	KeyboardSensor,
+} from '@dnd-kit/core';
+
+import {
+	SortableContext,
+	horizontalListSortingStrategy,
+	arrayMove,
+} from '@dnd-kit/sortable';
+
+import { restrictToHorizontalAxis } from '@dnd-kit/modifiers';
+
+import SortableItem from './sortableItem';
+
 import { useEffect, useState, useRef } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 
@@ -190,6 +209,35 @@ function Edit( {
 		setAttributes( { socialLinks: socialLinksCopy } );
 	};
 
+	// Drag and Drop Social Links -- setting up sensors
+	const sensors = useSensors(
+		useSensor( PointerSensor, {
+			activationConstraint: {
+				distance: 5,
+			},
+		} ),
+		useSensor( KeyboardSensor )
+	);
+
+	const handleDragEnd = ( event ) => {
+		const { active, over } = event;
+
+		if ( active && active.id !== over && over.id ) {
+			const oldIndex = socialLinks.findIndex(
+				( item ) => `${ item.icon }-${ item.link }` === active.id
+			);
+
+			const newIndex = socialLinks.findIndex(
+				( item ) => `${ item.icon }-${ item.link }` === over.id
+			);
+
+			const newSocialLinks = arrayMove( socialLinks, oldIndex, newIndex );
+
+			setAttributes( { socialLinks: newSocialLinks } );
+			setSelectedLink( newIndex );
+		}
+	};
+
 	return (
 		<>
 			<InspectorControls>
@@ -294,30 +342,31 @@ function Edit( {
 				/>
 				<div className="blocks-course-team-member-social-links">
 					<ul>
-						{ socialLinks.map( ( link, index ) => {
-							return (
-								<li
-									key={ index }
-									className={
-										selectedLink === index
-											? 'is-selected'
-											: null
-									}
-								>
-									<button
-										aria-label={ __(
-											'Edit Social Link',
-											'team-member'
-										) }
-										onClick={ () => {
-											setSelectedLink( index );
-										} }
-									>
-										<Icon icon={ link.icon } />
-									</button>
-								</li>
-							);
-						} ) }
+						<DndContext
+							sensors={ sensors }
+							onDragEnd={ handleDragEnd }
+							modifiers={ [ restrictToHorizontalAxis ] }
+						>
+							<SortableContext
+								items={ socialLinks.map(
+									( item ) => `${ item.icon }-${ item.link }`
+								) }
+								strategy={ horizontalListSortingStrategy }
+							>
+								{ socialLinks.map( ( item, index ) => {
+									return (
+										<SortableItem
+											key={ `${ item.icon }-${ item.link }` }
+											id={ `${ item.icon }-${ item.link }` }
+											index={ index }
+											selectedLink={ selectedLink }
+											setSelectedLink={ setSelectedLink }
+											icon={ item.icon }
+										/>
+									);
+								} ) }
+							</SortableContext>
+						</DndContext>
 						{ isSelected && (
 							<li className="blocks-course-team-member-social-links-add">
 								<Tooltip

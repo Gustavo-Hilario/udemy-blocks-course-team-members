@@ -7,6 +7,7 @@
 .wp-block-blocks-course-team-members {
 	display: block;
 
+	//stylelint-disable-next-line
 	.block-editor-block-list__layout {
 		background-color: rgb(224, 250, 254);
 		padding: 2px;
@@ -101,11 +102,12 @@
 						background: transparent;
 						border: none;
 						color: #4e4e4e;
-					}
 
-					&.is-selected button {
-						color: #ffc0cb;
-						outline: 1px dashed #f00;
+						&.is-selected {
+							color: #ffc0cb;
+							outline: 1px dashed #f00;
+							cursor: grab;
+						}
 					}
 				}
 
