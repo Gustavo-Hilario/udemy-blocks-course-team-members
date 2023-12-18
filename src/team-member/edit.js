@@ -126,7 +126,7 @@ function Edit( {
 
 	// Focus on the title field when the image is uploaded/added only
 	useEffect( () => {
-		if ( url && ! prevURL ) {
+		if ( url && ! prevURL && isSelected ) {
 			titleRef.current.focus();
 		}
 	}, [ url, prevURL ] );
