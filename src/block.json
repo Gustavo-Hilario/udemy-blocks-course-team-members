@@ -16,6 +16,9 @@
 		"html": false,
 		"align": ["wide", "full"]
 	},
+	"providesContext": {
+		"blocks-course/team-members-columns": "columns"
+	},
 	"attributes": {
 		"columns": {
 			"type": "number",

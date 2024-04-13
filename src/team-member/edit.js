@@ -57,6 +57,7 @@ import { isBlobURL, revokeBlobURL } from '@wordpress/blob';
 function Edit( {
 	attributes,
 	setAttributes,
+	context,
 	noticeOperations,
 	noticeUI,
 	isSelected,
@@ -323,6 +324,7 @@ function Edit( {
 					onError={ onUploadError }
 					notices={ noticeUI }
 				/>
+				{ context && context[ 'blocks-course/team-members-columns' ] }
 				<RichText
 					ref={ titleRef }
 					placeholder={ __( 'Team Member Name', 'team-member' ) }

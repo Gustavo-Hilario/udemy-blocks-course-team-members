@@ -15,6 +15,7 @@ registerBlockType( 'blocks-course/team-member', {
 		// Removes support for an HTML mode
 		html: false,
 	},
+	usesContext: [ 'blocks-course/team-members-columns' ],
 	attributes: {
 		name: {
 			type: 'string',
